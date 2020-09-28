@@ -1,10 +1,14 @@
+//Se importan las librerias y archivos necesarios
 const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
 const db = require("../services/mongo_conection");
 
+//Conexión de a la base de datos
 db.on("error", (error) => console.error(error));
 db.once("open", () => console.log("Connected to database"));
+
+//Metodo para la obtención de todos los usuarios
 router.get("/", async (req, res) => {
   try {
     const users = await User.find();
@@ -15,18 +19,18 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id",getUser, (req, res) => {
-  res.send(res.user.nickname);
+  res.json(res.user);
 });
 
 router.get("/:email", (req, res) => {});
 
 router.post("/", async (req, res) => {
   user = new User({
-    nickname: req.body.nickname.toString(),
-    password: req.body.password.toString(),
-    email: req.body.email.toString(),
+    nickname: req.body.nickname,
+    password: req.body.password,
+    email: req.body.email,
     range: req.body.range,
-    image: req.body.image.toString(),
+    image: req.body.image,
   });
 
   try {
@@ -37,9 +41,9 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.patch("/", (req, res) => {});
+router.patch("/", getUser,(req, res) => {});
 
-router.delete("/:username", (req, res) => {});
+router.delete("/:username",getUser, (req, res) => {});
 
 async function getUser(req, res, next){
     let user 

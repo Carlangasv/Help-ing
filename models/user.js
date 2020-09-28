@@ -16,9 +16,12 @@ const userSchema = new mongoose.Schema(
     },
     range: {
       type: Number,
+      required : true,
+      default : 1
     },
     image: {
       type: String,
+      default : "empty.jpg"
     },
   },
   {
